@@ -114,11 +114,11 @@ services:
     networks:
       - frappe_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--user=root", "--password=admin"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 100s
+      retries: 3
     deploy:
       restart_policy:
         condition: on-failure
