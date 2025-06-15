@@ -114,7 +114,7 @@ services:
     networks:
       - frappe_network
     healthcheck:
-      test: ["CMD", "mysqladmin", "status", "-padmin"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--password=${MARIADB_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
       retries: 5
