@@ -46,9 +46,6 @@ services:
       DB_HOST: db
       DB_PORT: "3306"
       MARIADB_ROOT_PASSWORD: admin
-    depends_on:
-      - configurator
-      - create-site
 
   configurator:
     image: frappe/erpnext:latest
@@ -116,8 +113,7 @@ services:
         echo "sites/common_site_config.json found";
         bench new-site --mariadb-user-host-login-scope='%' --admin-password=admin --db-root-username=root --db-root-password=admin --install-app erpnext --set-default frontend;
     depends_on:
-      db:
-        condition: service_healthy
+      - configurator
 
   db:
     image: mariadb:lts
