@@ -73,9 +73,6 @@ services:
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
-    depends_on:
-      db: { condition: service_healthy }
-
 
   create-site:
     image: frappe/erpnext:latest
@@ -109,8 +106,6 @@ services:
         done;
         echo "sites/common_site_config.json found";
         bench new-site --mariadb-user-host-login-scope='%' --admin-password=admin --db-root-username=root --db-root-password=admin --install-app erpnext --set-default frontend;
-    depends_on:
-      configurator: { condition: service_completed_successfully }
 
   db:
     image: mariadb:10.6
