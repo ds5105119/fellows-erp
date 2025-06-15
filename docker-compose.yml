@@ -117,8 +117,10 @@ services:
       - frappe_network
     healthcheck:
       test: ["CMD", "mysqladmin", "status", "-padmin"]
-      interval: 1s
-      retries: 20
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
     deploy:
       restart_policy:
         condition: on-failure
