@@ -112,7 +112,7 @@ services:
       configurator: { condition: service_completed_successfully }
 
   db:
-    image: mariadb:10.6
+    image: mariadb:latest
     networks:
       - frappe_network
     healthcheck:
@@ -120,7 +120,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 90s
+      start_period: 100s
     deploy:
       restart_policy:
         condition: on-failure
@@ -130,7 +130,6 @@ services:
       - --skip-character-set-client-handshake
       - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 10.6
     environment:
-      MYSQL_ROOT_PASSWORD: admin
       MARIADB_ROOT_PASSWORD: admin
     volumes:
       - db-data:/var/lib/mysql
