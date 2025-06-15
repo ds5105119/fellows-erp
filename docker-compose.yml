@@ -115,7 +115,7 @@ services:
       - frappe_network
     healthcheck:
       test: ["CMD", "/usr/local/bin/healthcheck.sh" ,"--innodb_initialized"]
-      start_period: 10s
+      start_period: 100s
       interval: 10s
       timeout: 5s
       retries: 3
@@ -126,10 +126,9 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_bin
     environment:
       MARIADB_ROOT_PASSWORD: admin
+      MARIADB_ROOT_HOST: '%'
     volumes:
       - db-data:/var/lib/mysql
 
