@@ -114,7 +114,7 @@ services:
     networks:
       - frappe_network
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      test: ["CMD", "/usr/local/bin/healthcheck.sh" ,"--innodb_initialized"]
       start_period: 10s
       interval: 10s
       timeout: 5s
