@@ -46,6 +46,10 @@ services:
       DB_HOST: db
       DB_PORT: "3306"
       MARIADB_ROOT_PASSWORD: admin
+    depends_on:
+      create-site:
+        condition: service_completed_successfully
+
 
   configurator:
     image: frappe/erpnext:latest
@@ -113,7 +117,8 @@ services:
         echo "sites/common_site_config.json found";
         bench new-site --mariadb-user-host-login-scope='%' --admin-password=admin --db-root-username=root --db-root-password=admin --install-app erpnext --set-default frontend;
     depends_on:
-      - configurator
+      configurator:
+        condition: service_completed_successfully
 
   db:
     image: mariadb:lts
@@ -141,10 +146,6 @@ services:
     image: frappe/erpnext:latest
     networks:
       - frappe_network
-    depends_on:
-      - websocket
-      - configurator
-      - create-site
     deploy:
       restart_policy:
         condition: on-failure
@@ -167,6 +168,10 @@ services:
       - logs:/home/frappe/frappe-bench/logs
     ports:
       - "8080:8080"
+    depends_on:
+      - websocket
+      - backend
+
 
   queue-long:
     image: frappe/erpnext:latest
@@ -183,6 +188,9 @@ services:
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
+    depends_on:
+      db:
+        condition: service_healthy
 
   redis-queue:
     image: redis:6.2-alpine
@@ -215,6 +223,9 @@ services:
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
+    depends_on:
+      db:
+        condition: service_healthy
 
   websocket:
     image: frappe/erpnext:latest
@@ -229,6 +240,9 @@ services:
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   db-data:
