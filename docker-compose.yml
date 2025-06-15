@@ -117,7 +117,7 @@ services:
     networks:
       - frappe_network
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "--password=admin" ]
+      test: ["CMD", "mysqladmin", "status", "-padmin"]
       interval: 1s
       retries: 20
     deploy:
