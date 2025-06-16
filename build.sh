@@ -6,3 +6,5 @@ docker build \
   --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
   --tag=ds5105119/frappe \
   --file=frappe_docker/images/layered/Containerfile .
+
+docker push ds5105119/frappe
