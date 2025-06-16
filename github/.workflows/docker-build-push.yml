@@ -1,0 +1,48 @@
+name: Build and Push Frappe Docker Image
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps.json'
+      - 'frappe_docker/images/layered/Containerfile'
+      - '.github/workflows/docker-build-push.yml'
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ds5105119/frappe
+      FRAPPE_PATH: https://github.com/frappe/frappe
+      FRAPPE_BRANCH: version-15
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Encode apps.json
+        id: encode_apps_json
+        run: |
+          echo "APPS_JSON_BASE64=$(base64 -w 0 ./apps.json)" >> $GITHUB_ENV
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: frappe_docker/images/layered/Containerfile
+          push: true
+          tags: ${{ env.IMAGE_NAME }}
+          build-args: |
+            FRAPPE_PATH=${{ env.FRAPPE_PATH }}
+            FRAPPE_BRANCH=${{ env.FRAPPE_BRANCH }}
+            APPS_JSON_BASE64=${{ env.APPS_JSON_BASE64 }}
