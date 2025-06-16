@@ -54,7 +54,7 @@ jobs:
       - name: Set environment variables
         run: |
           echo "FRAPPE_VERSION='version-15'" >> .env
-          echo "ERPNEXT_VERSION='version-15'" >> .env
+          echo "ERPNEXT_VERSION='latest'" >> .env
           echo "DB_PASSWORD='${{ secrets.DB_PASSWORD }}'" >> .env
           echo "LETSENCRYPT_EMAIL='${{ secrets.LETSENCRYPT_EMAIL }}'" >> .env
           echo "SITES='${{ secrets.SITES }}'" >> .env
