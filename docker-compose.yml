@@ -31,6 +31,7 @@ services:
       - nginx-proxy
     networks:
       - frappe_network
+    platform: linux/amd64
 
   backend:
     image: ds5105119/frappe:latest
@@ -49,7 +50,7 @@ services:
     depends_on:
       create-site:
         condition: service_completed_successfully
-
+    platform: linux/amd64
 
   configurator:
     image: ds5105119/frappe:latest
@@ -82,7 +83,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
+    platform: linux/amd64
 
   create-site:
     image: ds5105119/frappe:latest
@@ -119,6 +120,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
+    platform: linux/amd64
 
   db:
     image: mariadb:lts
@@ -141,6 +143,7 @@ services:
       MARIADB_ROOT_PASSWORD: admin
     volumes:
       - db-data:/var/lib/mysql
+    platform: linux/amd64
 
   frontend:
     image: ds5105119/frappe:latest
@@ -171,7 +174,7 @@ services:
     depends_on:
       - websocket
       - backend
-
+    platform: linux/amd64
 
   queue-long:
     image: ds5105119/frappe:latest
@@ -191,6 +194,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    platform: linux/amd64
 
   redis-queue:
     image: redis:6.2-alpine
@@ -209,6 +213,7 @@ services:
     deploy:
       restart_policy:
         condition: on-failure
+    platform: linux/amd64
 
   scheduler:
     image: ds5105119/frappe:latest
@@ -226,6 +231,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    platform: linux/amd64
 
   websocket:
     image: ds5105119/frappe:latest
@@ -243,6 +249,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    platform: linux/amd64
 
 volumes:
   db-data:
