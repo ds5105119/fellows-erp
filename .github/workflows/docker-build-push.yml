@@ -53,8 +53,8 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "FRAPPE_VERSION=version-15" >> .env
-          echo "ERPNEXT_VERSION=v15.65.1" >> .env
+          echo "FRAPPE_VERSION='version-15'" >> .env
+          echo "ERPNEXT_VERSION='v15.65.1'" >> .env
           echo "DB_PASSWORD='${{ secrets.DB_PASSWORD }}'" >> .env
           echo "LETSENCRYPT_EMAIL='${{ secrets.LETSENCRYPT_EMAIL }}'" >> .env
           echo "SITES='${{ secrets.SITES }}'" >> .env
@@ -63,19 +63,19 @@ jobs:
       - name: Generate docker-compose.yaml (for remote use)
         run: |
           export CUSTOM_IMAGE=${{ env.IMAGE_NAME }}
-          docker compose -f frappe_docker/compose.yaml \
-                         -f frappe_docker/overrides/compose.mariadb.yaml \
-                         -f frappe_docker/overrides/compose.https.yaml \
-                         -f frappe_docker/overrides/compose.redis.yaml \
-                         config > docker-compose.yaml
+          docker compose --env-file .env -f frappe_docker/compose.yaml \
+                                         -f frappe_docker/overrides/compose.mariadb.yaml \
+                                         -f frappe_docker/overrides/compose.https.yaml \
+                                         -f frappe_docker/overrides/compose.redis.yaml \
+                                         config > docker-compose.yaml
 
-      - name: Copy docker-compose.yaml and .env to GCP VM
+      - name: Copy docker-compose.yaml to GCP VM
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.GCP_VM_IP }}
           username: ${{ secrets.GCP_VM_USER }}
           key: ${{ secrets.GCP_SSH_KEY }}
-          source: docker-compose.yaml,.env
+          source: docker-compose.yaml
           target: ~/gitops/
 
       - name: Deploy on GCP VM via SSH
