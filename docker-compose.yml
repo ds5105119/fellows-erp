@@ -33,7 +33,7 @@ services:
       - frappe_network
 
   backend:
-    image: frappe/erpnext:latest
+    image: ds5105119/frappe:latest
     networks:
       - frappe_network
     deploy:
@@ -52,7 +52,7 @@ services:
 
 
   configurator:
-    image: frappe/erpnext:latest
+    image: ds5105119/frappe:latest
     networks:
       - frappe_network
     deploy:
@@ -85,7 +85,7 @@ services:
 
 
   create-site:
-    image: frappe/erpnext:latest
+    image: ds5105119/frappe:latest
     networks:
       - frappe_network
     deploy:
@@ -143,7 +143,7 @@ services:
       - db-data:/var/lib/mysql
 
   frontend:
-    image: frappe/erpnext:latest
+    image: ds5105119/frappe:latest
     networks:
       - frappe_network
     deploy:
@@ -174,7 +174,7 @@ services:
 
 
   queue-long:
-    image: frappe/erpnext:latest
+    image: ds5105119/frappe:latest
     networks:
       - frappe_network
     deploy:
@@ -211,7 +211,7 @@ services:
         condition: on-failure
 
   scheduler:
-    image: frappe/erpnext:latest
+    image: ds5105119/frappe:latest
     networks:
       - frappe_network
     deploy:
@@ -228,7 +228,7 @@ services:
         condition: service_healthy
 
   websocket:
-    image: frappe/erpnext:latest
+    image: ds5105119/frappe:latest
     networks:
       - frappe_network
     deploy:
