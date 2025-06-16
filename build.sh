@@ -1,4 +1,4 @@
-APPS_JSON_BASE64=$(base64 < ./apps.json | tr -d '\n')
+APPS_JSON_BASE64=$(base64 -w 0 ./apps.json)
 
 docker build \
   --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
