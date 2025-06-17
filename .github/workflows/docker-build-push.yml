@@ -17,25 +17,40 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Clone frappe_docker repository
+      - name: Check if apps.json or Dockerfile changed
+        id: check_diff
         run: |
-          git clone https://github.com/frappe/frappe_docker.git
+          git fetch origin main
+          DIFF=$(git diff --name-only HEAD^ HEAD)
+          echo "$DIFF"
+          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$|^compose\.ya?ml$'; then
+            echo "needs_build=true" >> $GITHUB_OUTPUT
+          else
+            echo "needs_build=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Clone frappe_docker repository
+        run: git clone https://github.com/frappe/frappe_docker.git
 
       - name: Set up Docker Build
+        if: steps.check_diff.outputs.needs_build == 'true'
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to DockerHub
+        if: steps.check_diff.outputs.needs_build == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Encode apps.json
+        if: steps.check_diff.outputs.needs_build == 'true'
         id: encode_apps_json
         run: |
           echo "APPS_JSON_BASE64=$(base64 -w 0 ./apps.json)" >> $GITHUB_ENV
 
       - name: Build and Push Docker Image
+        if: steps.check_diff.outputs.needs_build == 'true'
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -57,7 +72,7 @@ jobs:
           echo "FRAPPE_SITE_NAME_HEADER='${{ secrets.FRAPPE_SITE_NAME_HEADER }}'" >> .env
           echo "CUSTOM_IMAGE='${{ env.IMAGE_NAME }}'" >> .env
 
-      - name: Generate docker-compose.yaml (for remote use)
+      - name: Generate docker-compose.yaml
         run: |
           docker compose --env-file .env -f compose.yaml \
                                          -f frappe_docker/overrides/compose.https.yaml \
