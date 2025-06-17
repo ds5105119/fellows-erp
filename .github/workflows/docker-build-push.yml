@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'apps.json'
-      - 'frappe_docker/images/layered/Containerfile'
-      - '.github/workflows/docker-build-push.yml'
 
 jobs:
   build-push:
