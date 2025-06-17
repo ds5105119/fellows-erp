@@ -86,4 +86,4 @@ jobs:
           key: ${{ secrets.GCP_SSH_KEY }}
           script: |
             cd ~/gitops
-            nohup docker compose up -d > /dev/null 2>&1 &
+            nohup docker compose up -d > nohup.out 2>&1 &
