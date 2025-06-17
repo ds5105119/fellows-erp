@@ -63,7 +63,6 @@ jobs:
 
       - name: Generate docker-compose.yaml (for remote use)
         run: |
-          export CUSTOM_IMAGE=${{ env.IMAGE_NAME }}
           docker compose --env-file .env -f frappe_docker/compose.yaml \
                                          -f frappe_docker/overrides/compose.mariadb.yaml \
                                          -f frappe_docker/overrides/compose.https.yaml \
@@ -87,4 +86,4 @@ jobs:
           key: ${{ secrets.GCP_SSH_KEY }}
           script: |
             cd ~/gitops
-            docker compose up -d
+            nohup docker compose up -d > /dev/null 2>&1 &
