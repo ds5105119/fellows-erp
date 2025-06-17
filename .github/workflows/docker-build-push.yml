@@ -22,10 +22,19 @@ jobs:
       - name: Check if apps.json or Dockerfile changed
         id: check_diff
         run: |
-          git fetch origin main
-          DIFF=$(git diff --name-only HEAD^ HEAD)
+          git fetch origin main || true
+          git rev-parse HEAD^ || echo "NO_PARENT"
+
+          if git rev-parse HEAD^ >/dev/null 2>&1; then
+            DIFF=$(git diff --name-only HEAD^ HEAD)
+          else
+            DIFF=$(git diff --name-only HEAD)
+          fi
+
+          echo "Changed files:"
           echo "$DIFF"
-          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$|^compose\.ya?ml$|^actions/'; then
+
+          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$|^compose\.ya?ml$|^\.github/actions/'; then
             echo "needs_build=true" >> $GITHUB_OUTPUT
           else
             echo "needs_build=false" >> $GITHUB_OUTPUT
