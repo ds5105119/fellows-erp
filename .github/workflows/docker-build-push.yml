@@ -90,7 +90,6 @@ jobs:
       - name: Generate docker-compose.yaml
         run: |
           docker compose --env-file .env -f compose.yaml \
-                                         -f frappe_docker/overrides/compose.https.yaml \
                                          -f frappe_docker/overrides/compose.redis.yaml \
                                          config > docker-compose.yaml
 
