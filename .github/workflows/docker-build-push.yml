@@ -63,8 +63,7 @@ jobs:
 
       - name: Generate docker-compose.yaml (for remote use)
         run: |
-          docker compose --env-file .env -f frappe_docker/compose.yaml \
-                                         -f frappe_docker/overrides/compose.mariadb.yaml \
+          docker compose --env-file .env -f compose.yaml \
                                          -f frappe_docker/overrides/compose.https.yaml \
                                          -f frappe_docker/overrides/compose.redis.yaml \
                                          config > docker-compose.yaml
