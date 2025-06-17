@@ -37,9 +37,7 @@ jobs:
           echo "📝 Changed files:"
           echo "$DIFF"
 
-          echo "🔍 Checking if rebuild is needed..."
-
-          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$|^compose\.ya?ml$|^\.github/actions/'; then
+          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$|^compose\.ya?ml$|^\.github/actions/|^\.github/workflows/'; then
             echo "🛠️ Changes detected in critical files. Will trigger build."
             echo "needs_build=true" >> "$GITHUB_OUTPUT"
           else
