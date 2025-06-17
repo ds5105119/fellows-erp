@@ -86,7 +86,7 @@ jobs:
           echo "LETSENCRYPT_EMAIL='${{ secrets.LETSENCRYPT_EMAIL }}'" >> .env
           echo "SITES='${{ secrets.SITES }}'" >> .env
           echo "CUSTOM_IMAGE='${{ env.IMAGE_NAME }}'" >> .env
-          echo "LETSENCRYPT_EMAIL='admin@iihus.com' >> .env
+          echo "LETSENCRYPT_EMAIL='admin@iihus.com'" >> .env
 
       - name: Generate docker-compose.yaml
         run: |
