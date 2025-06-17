@@ -25,7 +25,7 @@ jobs:
           git fetch origin main
           DIFF=$(git diff --name-only HEAD^ HEAD)
           echo "$DIFF"
-          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$|^compose\.ya?ml$'; then
+          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$|^compose\.ya?ml$|^actions/'; then
             echo "needs_build=true" >> $GITHUB_OUTPUT
           else
             echo "needs_build=false" >> $GITHUB_OUTPUT
