@@ -69,7 +69,6 @@ jobs:
           echo "DB_PASSWORD='${{ secrets.DB_PASSWORD }}'" >> .env
           echo "LETSENCRYPT_EMAIL='${{ secrets.LETSENCRYPT_EMAIL }}'" >> .env
           echo "SITES='${{ secrets.SITES }}'" >> .env
-          echo "FRAPPE_SITE_NAME_HEADER='${{ secrets.FRAPPE_SITE_NAME_HEADER }}'" >> .env
           echo "CUSTOM_IMAGE='${{ env.IMAGE_NAME }}'" >> .env
 
       - name: Generate docker-compose.yaml
