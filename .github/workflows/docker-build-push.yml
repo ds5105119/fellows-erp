@@ -37,7 +37,7 @@ jobs:
           echo "📝 Changed files:"
           echo "$DIFF"
 
-          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$|^compose\.ya?ml$|^\.github/actions/|^\.github/workflows/'; then
+          if echo "$DIFF" | grep -qE '^apps\.json$|^frappe_docker/images/layered/Containerfile$'; then
             echo "🛠️ Changes detected in critical files. Will trigger build."
             echo "needs_build=true" >> "$GITHUB_OUTPUT"
           else
@@ -86,6 +86,7 @@ jobs:
           echo "LETSENCRYPT_EMAIL='${{ secrets.LETSENCRYPT_EMAIL }}'" >> .env
           echo "SITES='${{ secrets.SITES }}'" >> .env
           echo "CUSTOM_IMAGE='${{ env.IMAGE_NAME }}'" >> .env
+          echo "LETSENCRYPT_EMAIL='admin@iihus.com' >> .env
 
       - name: Generate docker-compose.yaml
         run: |
