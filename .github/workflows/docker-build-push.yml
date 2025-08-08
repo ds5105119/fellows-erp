@@ -80,8 +80,10 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "FRAPPE_VERSION='version-15'" >> .env
+          echo "FRAPPE_VERSION='latest'" >> .env
           echo "ERPNEXT_VERSION='latest'" >> .env
+          echo "DB_HOST='${{ secrets.DB_HOST }}'" >> .env
+          echo "DB_USERNAME='${{ secrets.DB_USERNAME }}'" >> .env
           echo "DB_PASSWORD='${{ secrets.DB_PASSWORD }}'" >> .env
           echo "LETSENCRYPT_EMAIL='${{ secrets.LETSENCRYPT_EMAIL }}'" >> .env
           echo "SITES='${{ secrets.SITES }}'" >> .env
